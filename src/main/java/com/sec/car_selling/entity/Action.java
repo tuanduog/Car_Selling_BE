@@ -2,7 +2,6 @@ package com.sec.car_selling.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,15 +10,12 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "user")
-public class User extends BaseEntity {
+public class Action extends BaseEntity {
 
-    String fullName;
+    @Column(name = "module_id")
+    int moduleId;
 
-    String email;
+    String name;
 
-    String password;
-
-    @Column(name = "role_id")
-    int roleId;
+    String path;
 }

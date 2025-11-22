@@ -1,7 +1,7 @@
 package com.sec.car_selling.util.enums;
 
 public enum Role {
-    ADMIN("Admin"), STAFF("Staff"), CUSTOMER("Customer");
+    ADMIN("Admin"), MANAGER("Manager"), STAFF("Staff"), CUSTOMER("Customer");
 
     private final String value;
 
