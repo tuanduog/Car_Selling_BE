@@ -26,7 +26,7 @@ public class AccountController {
 
     @GetMapping("/v1")
     public ResponseEntity<?> getList(
-            @PageableDefault(page = 0, size = 10) Pageable pageable,
+            @PageableDefault(page = 0, size = 5) Pageable pageable,
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) Integer status,
             @RequestParam(required = false) String role) {

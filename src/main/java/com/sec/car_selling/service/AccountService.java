@@ -25,7 +25,9 @@ public class AccountService {
         else {
             keyword = "%%";
         }
-
+        if (role != null && role.isBlank()) {
+            role = null;
+        }
         return userRepository.findAllByKeywordAndStatus(pageable, keyword, status, role);
     }
 }

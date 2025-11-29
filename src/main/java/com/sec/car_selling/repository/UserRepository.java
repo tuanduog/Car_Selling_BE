@@ -15,12 +15,14 @@ public interface UserRepository extends JpaRepository<User,Long> {
     Optional<User> findByEmail(String email);
 
     @Query("""
-        SELECT new com.sec.car_selling.dto.response.AccountResponse(u.id, u.fullName, u.email, u.role, u.createdAt, u.updatedAt, u.status)
+        SELECT new com.sec.car_selling.dto.response.AccountResponse(
+            u.id, u.fullName, u.email, u.role, u.createdAt, u.updatedAt, u.status)
         FROM User u
-        WHERE (LOWER(u.fullName) LIKE :keyword)
-            OR LOWER(u.email) LIKE :keyword
-        AND (:status IS NULL OR u.status = :status)
-        AND (:role IS NULL OR u.role = :role)
+        WHERE (LOWER(u.fullName) LIKE :keyword OR LOWER(u.email) LIKE :keyword)
+          AND (:status IS NULL OR u.status = :status)
+          AND (:role IS NULL OR u.role = :role)
+          AND u.role <> 'Manager'
     """)
     Page<AccountResponse> findAllByKeywordAndStatus(Pageable pageable, String keyword, Integer status, String role);
+
 }
