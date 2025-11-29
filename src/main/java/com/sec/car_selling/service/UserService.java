@@ -33,7 +33,7 @@ public class UserService {
         newUser.setFullName((request.getFullName()));
         newUser.setEmail((request.getEmail()));
         newUser.setPassword(passwordEncoder.encode(request.getPassword()));
-        newUser.setRoleId(4);
+        newUser.setRole(Role.CUSTOMER.getValue());
         newUser.setStatus(Status.ACTIVE.getValue());
         userRepository.save(newUser);
         return "Đăng ký thành công";

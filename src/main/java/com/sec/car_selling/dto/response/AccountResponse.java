@@ -1,27 +1,30 @@
-package com.sec.car_selling.entity;
+package com.sec.car_selling.dto.response;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDateTime;
+
 @Data
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "user")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User extends BaseEntity {
+public class AccountResponse {
+
+    int id;
 
     String fullName;
 
     String email;
 
-    String password;
-
     String role;
+
+    LocalDateTime createdAt;
+
+    LocalDateTime updatedAt;
+
+    int status;
 }

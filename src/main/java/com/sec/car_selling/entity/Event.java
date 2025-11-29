@@ -1,21 +1,27 @@
 package com.sec.car_selling.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Module extends BaseEntity {
-
-    @Column(name = "role_id")
-    int roleId;
+@Table(name = "event")
+public class Event extends BaseEntity{
 
     String name;
 
-    String path;
+    int type;
+
+    LocalDateTime startDate;
+
+    LocalDateTime endDate;
+
+    String detail;
 }

@@ -1,7 +1,6 @@
 package com.sec.car_selling.service;
 
 import com.sec.car_selling.dto.request.PasswordRequest;
-import com.sec.car_selling.dto.response.BaseResponse;
 import com.sec.car_selling.entity.User;
 import com.sec.car_selling.repository.UserRepository;
 import lombok.AccessLevel;
@@ -26,7 +25,8 @@ public class ProfileService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        if(!passwordEncoder.encode(request.getCurrentPassword()).matches(user.getPassword())){
+
+        if(!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())){
             throw new IllegalArgumentException("Mật khẩu hiện tại không chính xác");
         }
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));

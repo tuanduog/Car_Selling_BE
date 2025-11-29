@@ -27,33 +27,11 @@ public class UserDetailsService implements org.springframework.security.core.use
 
         if (user.isPresent()) {
             User u = user.get();
-            String role;
-            switch (u.getRoleId()){
-                case 1: {
-                    role = Role.ADMIN.getValue();
-                    break;
-                }
-                case 2: {
-                    role = Role.MANAGER.getValue();
-                    break;
-                }
-                case 3: {
-                    role = Role.STAFF.getValue();
-                    break;
-                }
-                case 4: {
-                    role = Role.CUSTOMER.getValue();
-                    break;
-                }
-                default: {
-                    throw new UsernameNotFoundException("Username not found");
-                }
-            }
 
             return org.springframework.security.core.userdetails.User.builder()
                     .username(u.getEmail())
                     .password(u.getPassword())
-                    .roles(role)
+                    .roles(u.getRole())
                     .build();
         } else {
             throw new UsernameNotFoundException("User not found with email: " + email);

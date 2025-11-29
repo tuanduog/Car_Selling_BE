@@ -1,20 +1,23 @@
 package com.sec.car_selling.entity;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import lombok.AccessLevel;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.FieldDefaults;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
-public class Role extends BaseEntity {
+@Table(name = "accessory")
+public class Accessory extends BaseEntity{
 
     String name;
 
+    double price;
+
+    String description;
+
+    String detail;
 }

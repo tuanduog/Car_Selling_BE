@@ -26,7 +26,7 @@ public class JwtService {
     @Value("${jwt.expire-minute}")
     public int EXPIRE_MINUTE;
 
-    public String generateToken(String email, int role) {
+    public String generateToken(String email, String role) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("role", role);
         return createToken(claims, email);

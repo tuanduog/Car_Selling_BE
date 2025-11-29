@@ -2,20 +2,22 @@ package com.sec.car_selling.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Action extends BaseEntity {
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class Permission extends BaseEntity{
 
     @Column(name = "module_id")
     int moduleId;
 
-    String name;
-
-    String path;
+    @Column(name = "action_id")
+    int actionId;
 }
