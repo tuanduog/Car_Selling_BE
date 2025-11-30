@@ -1,6 +1,7 @@
 package com.sec.car_selling.service;
 
 import com.sec.car_selling.dto.response.AccountResponse;
+import com.sec.car_selling.entity.User;
 import com.sec.car_selling.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,8 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -29,5 +32,17 @@ public class AccountService {
             role = null;
         }
         return userRepository.findAllByKeywordAndStatus(pageable, keyword, status, role);
+    }
+
+    public void update(int id){
+        Optional<User> user = userRepository.findById(id);
+        user.ifPresent(u -> {
+            if(u.getStatus() == 1){
+                u.setStatus(0);
+            } else {
+                u.setStatus(1);
+            }
+            userRepository.save(u);
+        });
     }
 }

@@ -14,6 +14,8 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User,Long> {
     Optional<User> findByEmail(String email);
 
+    Optional<User> findById(int id);
+
     @Query("""
         SELECT new com.sec.car_selling.dto.response.AccountResponse(
             u.id, u.fullName, u.email, u.role, u.createdAt, u.updatedAt, u.status)

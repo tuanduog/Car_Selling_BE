@@ -8,10 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/account-manager")
@@ -30,6 +27,12 @@ public class AccountController {
             @RequestParam(required = false) String keyword,
             @RequestParam(required = false) Integer status,
             @RequestParam(required = false) String role) {
-        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), accountService.getList(pageable, keyword, status, role), "Success"));
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), accountService.getList(pageable, keyword, status, role), "Successful"));
+    }
+
+    @PutMapping("/v1/{id}")
+    public ResponseEntity<?> update(@PathVariable int id){
+        accountService.update(id);
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), null, "Update successful"));
     }
 }
