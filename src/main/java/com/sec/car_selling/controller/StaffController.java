@@ -1,6 +1,7 @@
 package com.sec.car_selling.controller;
 
 import com.sec.car_selling.dto.request.AddEmployeeRequest;
+import com.sec.car_selling.dto.request.UpdateEmployeeRequest;
 import com.sec.car_selling.dto.response.BaseResponse;
 import com.sec.car_selling.service.StaffService;
 import lombok.AccessLevel;
@@ -34,12 +35,21 @@ public class StaffController {
 
     @PostMapping("/v1")
     public ResponseEntity<?> addStaff(@RequestBody AddEmployeeRequest request){
-        if (request == null) {
-            System.out.println("Request body is null!");
-        } else {
-            System.out.println(request);
-        }
         staffService.addStaff(request);
         return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), null, "Added Successfully"));
     }
+
+    @PutMapping("/v1/{id}")
+    public ResponseEntity<?> updateStaff(@RequestBody UpdateEmployeeRequest request, @PathVariable int id){
+        staffService.updateStaff(request, id);
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), null, "Updated Successfully"));
+    }
+
+    @PutMapping("/inactive/v1/{id}")
+    public ResponseEntity<?> deleteStaff(@PathVariable int id){
+        System.out.println(id);
+        staffService.deleteStaff(id);
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), null, "Deleted Successfully"));
+    }
+
 }

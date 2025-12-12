@@ -1,6 +1,7 @@
 package com.sec.car_selling.service;
 
 import com.sec.car_selling.dto.request.AddEmployeeRequest;
+import com.sec.car_selling.dto.request.UpdateEmployeeRequest;
 import com.sec.car_selling.dto.response.StaffResponse;
 import com.sec.car_selling.entity.Staff;
 import com.sec.car_selling.entity.User;
@@ -18,6 +19,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -62,5 +65,42 @@ public class StaffService {
         staff.setAddress(request.getAddress());
         staff.setManagerId(request.getManagerId());
         staffRepository.save(staff);
+    }
+
+    public void updateStaff(UpdateEmployeeRequest request, int id){
+        Optional<Staff> staff = staffRepository.findById(id);
+        if(staff.isPresent()){
+            Optional<User> user = userRepository.findById(staff.get().getUserId());
+            if(user.isPresent()){
+                User u = user.get();
+                u.setFullName(request.getFullName());
+                u.setEmail(request.getEmail());
+                userRepository.save(u);
+            }
+
+            Staff st = staff.get();
+            st.setCode(request.getCode());
+            st.setBirthday(request.getBirthDay());
+            st.setGender(request.getGender());
+            st.setAddress(request.getAddress());
+            st.setPhone(request.getPhone());
+            staffRepository.save(st);
+        }
+    }
+
+    public void deleteStaff(int id){
+        Optional<Staff> staff = staffRepository.findById(id);
+        if(staff.isPresent()){
+            Staff st = staff.get();
+            Optional<User> user = userRepository.findById(st.getUserId());
+
+            if(user.isPresent()) {
+                User u = user.get();
+                if (u.getStatus() == Status.ACTIVE.getValue()) {
+                    u.setStatus(Status.INACTIVE.getValue());
+                }
+                userRepository.save(u);
+            }
+        }
     }
 }
