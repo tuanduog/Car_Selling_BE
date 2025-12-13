@@ -8,6 +8,7 @@ import com.sec.car_selling.entity.User;
 import com.sec.car_selling.repository.StaffRepository;
 import com.sec.car_selling.repository.UserRepository;
 import com.sec.car_selling.util.PasswordGenerator;
+import com.sec.car_selling.util.enums.Role;
 import com.sec.car_selling.util.enums.Status;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -42,7 +43,10 @@ public class StaffService {
             keyword = "%%";
         }
 
-        return staffRepository.findAllByKeywordAndStatus(pageable, keyword, status, role);
+        if(role.equalsIgnoreCase(Role.TEAM_LEADER.getValue())){
+            return staffRepository.findAllLeaderByKeywordAndStatus(pageable, keyword, status, role);
+        }
+        return staffRepository.findAllStaffByKeywordAndStatus(pageable, keyword, status, role);
     }
 
     @Transactional
@@ -96,8 +100,8 @@ public class StaffService {
 
             if(user.isPresent()) {
                 User u = user.get();
-                if (u.getStatus() == Status.ACTIVE.getValue()) {
-                    u.setStatus(Status.INACTIVE.getValue());
+                if(u.getIs_deleted() == null || u.getIs_deleted() == false){
+                    u.setIs_deleted(true);
                 }
                 userRepository.save(u);
             }

@@ -33,4 +33,7 @@ public class BaseEntity {
     LocalDateTime updatedAt;
 
     int status;
+
+    @Column(name = "is_deleted")
+    Boolean is_deleted;
 }

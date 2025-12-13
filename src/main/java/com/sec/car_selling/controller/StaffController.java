@@ -45,9 +45,8 @@ public class StaffController {
         return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), null, "Updated Successfully"));
     }
 
-    @PutMapping("/inactive/v1/{id}")
+    @PutMapping("/delete/v1/{id}")
     public ResponseEntity<?> deleteStaff(@PathVariable int id){
-        System.out.println(id);
         staffService.deleteStaff(id);
         return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), null, "Deleted Successfully"));
     }
