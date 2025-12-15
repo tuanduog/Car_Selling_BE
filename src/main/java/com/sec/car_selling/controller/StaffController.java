@@ -51,4 +51,9 @@ public class StaffController {
         return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), null, "Deleted Successfully"));
     }
 
+    @GetMapping("/v1/{id}")
+    public ResponseEntity<?> getStaffById(@PathVariable int id){
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), staffService.getStaffById(id), "Successfully"));
+    }
+
 }

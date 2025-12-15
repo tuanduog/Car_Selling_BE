@@ -64,6 +64,7 @@ public class StaffService {
         Staff staff = new Staff();
         staff.setUserId(user.getId());
         staff.setCode(request.getCode());
+        staff.setPhone(request.getPhone());
         staff.setBirthday(request.getBirthDay());
         staff.setGender(request.getGender());
         staff.setAddress(request.getAddress());
@@ -100,11 +101,13 @@ public class StaffService {
 
             if(user.isPresent()) {
                 User u = user.get();
-                if(u.getIs_deleted() == null || u.getIs_deleted() == false){
-                    u.setIs_deleted(true);
-                }
+                u.setStatus(Status.DELETED.getValue());
                 userRepository.save(u);
             }
         }
+    }
+
+    public StaffResponse getStaffById(int id){
+        return staffRepository.getStaffById(id);
     }
 }

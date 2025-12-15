@@ -1,7 +1,7 @@
 package com.sec.car_selling.util.enums;
 
 public enum Status {
-    ACTIVE(1), INACTIVE(0);
+    INACTIVE(0), ACTIVE(1), DELETED(2);
 
     private final int value;
 
