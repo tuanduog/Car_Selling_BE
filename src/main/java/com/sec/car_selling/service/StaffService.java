@@ -89,6 +89,7 @@ public class StaffService {
             st.setGender(request.getGender());
             st.setAddress(request.getAddress());
             st.setPhone(request.getPhone());
+            st.setManagerId(request.getManagerId());
             staffRepository.save(st);
         }
     }
