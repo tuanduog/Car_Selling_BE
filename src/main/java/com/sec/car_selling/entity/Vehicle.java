@@ -1,6 +1,6 @@
 package com.sec.car_selling.entity;
 
-import com.sec.car_selling.util.JsonConverter;
+import com.sec.car_selling.util.*;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -20,13 +20,13 @@ public class Vehicle extends BaseEntity{
 
     String imageUrl;
 
+    String code;
+
     String name;
 
     double price;
 
     int version;
-
-    String color;
 
     LocalDate releaseDate;
 
@@ -35,22 +35,18 @@ public class Vehicle extends BaseEntity{
     String description;
 
     @Column(columnDefinition = "json")
-    @Convert(converter = JsonConverter.class)
+    @Convert(converter = SizeWeightConverter.class)
     SizeWeight sizeWeight;
 
     @Column(columnDefinition = "json")
-    @Convert(converter = JsonConverter.class)
+    @Convert(converter = EngineOperateConverter.class)
     EngineOperate engineOperate;
 
     @Column(columnDefinition = "json")
-    @Convert(converter = JsonConverter.class)
+    @Convert(converter = BatteryRangeConverter.class)
     BatteryRange batteryRange;
 
     @Column(columnDefinition = "json")
-    @Convert(converter = JsonConverter.class)
-    ExteriorFeature exteriorFeature;
-
-    @Column(columnDefinition = "json")
-    @Convert(converter = JsonConverter.class)
+    @Convert(converter = InteriorFeatureConverter.class)
     InteriorFeature interiorFeature;
 }

@@ -13,7 +13,7 @@ import lombok.experimental.FieldDefaults;
 public class SizeWeight {
     SpecificationItem dimension;
     SpecificationItem wheelBase;
-    SpecificationItem  groundClearance;
+    SpecificationItem groundClearance;
     SpecificationItem curbWeight;
     SpecificationItem seat;
     SpecificationItem trunkVolume;

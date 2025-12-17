@@ -2,28 +2,31 @@ package com.sec.car_selling.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.AttributeConverter;
-import jakarta.persistence.Converter;
 
-@Converter
-public class JsonConverter implements AttributeConverter<Object, String> {
+public abstract class JsonConverter<T> implements AttributeConverter<T, String> {
 
     private static final ObjectMapper mapper = new ObjectMapper();
+    private final Class<T> clazz;
+
+    protected JsonConverter(Class<T> clazz) {
+        this.clazz = clazz;
+    }
 
     @Override
-    public String convertToDatabaseColumn(Object attribute) {
+    public String convertToDatabaseColumn(T attribute) {
         try {
             return mapper.writeValueAsString(attribute);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to convert to JSON", e);
         }
     }
 
     @Override
-    public Object convertToEntityAttribute(String dbData) {
+    public T convertToEntityAttribute(String dbData) {
         try {
-            return mapper.readValue(dbData, Object.class);
+            return mapper.readValue(dbData, clazz);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to read JSON", e);
         }
     }
 }
