@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface VehicleRepository extends JpaRepository<Vehicle, Integer> {
 
@@ -19,4 +21,10 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Integer> {
     """)
     Page<VehicleResponse> findAllByKeyword(Pageable pageable, String keyword);
 
+    @Query(value = """
+        SELECT v
+        FROM Vehicle v
+        WHERE v.code = :code
+    """)
+    Optional<Vehicle> findByCode(String code);
 }

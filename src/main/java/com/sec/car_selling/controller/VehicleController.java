@@ -41,4 +41,15 @@ public class VehicleController {
         vehicleService.deleteVehicle(id);
         return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), null, "vehicle deleted successfully"));
     }
+
+    @GetMapping(value = "/v1/{id}")
+    public ResponseEntity<?> getById(@PathVariable Integer id){
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), vehicleService.getById(id), "vehicle found successfully"));
+    }
+
+    @PutMapping(value = "/v1/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateVehicle(@PathVariable Integer id, @RequestPart("vehicle") VehicleRequest request, @RequestPart(value = "image", required = false) MultipartFile image){
+        vehicleService.updateVehicle(id, request, image);
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), null, "vehicle updated successfully"));
+    }
 }
