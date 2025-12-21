@@ -8,12 +8,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
+
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Payment extends BaseEntity {
+
+    String code;
 
     @Column(name = "customer_id")
     Integer customerId;
@@ -35,7 +39,7 @@ public class Payment extends BaseEntity {
 
     int type;
 
-    double price;
+    BigDecimal price;
 
     @Column(name = "payment_status")
     int paymentStatus;

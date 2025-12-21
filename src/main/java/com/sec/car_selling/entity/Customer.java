@@ -20,6 +20,12 @@ public class Customer extends BaseEntity {
     @Column(name = "user_id")
     Integer userId;
 
+    @Column(name = "payment_name")
+    String paymentName;
+
+    @Column(name = "payment_email")
+    String paymentEmail;
+
     @Column(name = "identity_number")
     String identityNumber;
 
