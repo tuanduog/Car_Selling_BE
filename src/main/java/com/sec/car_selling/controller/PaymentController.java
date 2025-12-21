@@ -30,9 +30,10 @@ public class PaymentController {
     public ResponseEntity<?> getList(
             @PageableDefault(page = 0, size = 5) Pageable pageable,
             @RequestParam(required = false) String keyword,
-            @RequestParam(required = false) Integer paymentStatus
+            @RequestParam(required = false) Integer paymentStatus,
+            @RequestParam(required = false) Integer paymentType
     ){
-        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), paymentService.getList(pageable, keyword, paymentStatus), "list successful"));
+        return ResponseEntity.ok(new BaseResponse<>(HttpStatus.OK.value(), paymentService.getList(pageable, keyword, paymentStatus, paymentType), "list successful"));
     }
 
     @GetMapping("/v1/{id}")

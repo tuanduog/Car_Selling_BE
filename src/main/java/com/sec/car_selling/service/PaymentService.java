@@ -80,7 +80,7 @@ public class PaymentService {
         }
     }
 
-    public Page<PaymentResponse> getList(Pageable pageable, String keyword, Integer paymentStatus){
+    public Page<PaymentResponse> getList(Pageable pageable, String keyword, Integer paymentStatus, Integer paymentType){
         if (keyword != null) {
             keyword = "%" + keyword.trim().toLowerCase() + "%";
         }
@@ -88,11 +88,24 @@ public class PaymentService {
             keyword = "%%";
         }
 
-        return paymentRepository.findAllByKeyword(pageable, keyword, paymentStatus);
+        return paymentRepository.findAllByKeyword(pageable, keyword, paymentStatus, paymentType);
     }
 
-    public Payment getById(int id){
-        return paymentRepository.findById(id).get();
+    public PaymentResponse getById(int id) {
+
+        Payment payment = paymentRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy payment id = " + id));
+
+        int type = payment.getType();
+
+        if (type == PaymentType.INSTALLMENT.getValue()) {
+            return paymentRepository.findByIdForInstallment(id);
+
+        } else if (type == PaymentType.FULL.getValue()) {
+            return paymentRepository.findByIdForFull(id);
+        }
+
+        throw new RuntimeException("Loại payment không hợp lệ");
     }
 
     public void cancelledById(int id){
