@@ -1,14 +1,19 @@
 package com.sec.car_selling.service;
 
 import com.sec.car_selling.dto.request.PaymentRequest;
+import com.sec.car_selling.dto.response.PaymentResponse;
 import com.sec.car_selling.entity.*;
 import com.sec.car_selling.repository.*;
+import com.sec.car_selling.util.GeneratePaymentCode;
 import com.sec.car_selling.util.enums.PaymentStatus;
 import com.sec.car_selling.util.enums.PaymentType;
+import com.sec.car_selling.util.enums.Status;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -33,11 +38,13 @@ public class PaymentService {
 
     public void addPayment(PaymentRequest request){
         Payment payment = new Payment();
+        payment.setCode(GeneratePaymentCode.generatePaymentCode());
         payment.setCarId(request.getCarId());
         payment.setCarName(request.getCarName());
         payment.setCarColor(request.getCarColor());
         payment.setCarVersion(request.getCarVersion());
         payment.setPrice(request.getPrice());
+        payment.setStatus(Status.ACTIVE.getValue());
         payment.setPaymentStatus(PaymentStatus.PENDING.getValue());
         payment.setType(request.getPaymentType());
 
@@ -73,5 +80,30 @@ public class PaymentService {
         }
     }
 
+    public Page<PaymentResponse> getList(Pageable pageable, String keyword, Integer paymentStatus){
+        if (keyword != null) {
+            keyword = "%" + keyword.trim().toLowerCase() + "%";
+        }
+        else {
+            keyword = "%%";
+        }
 
+        return paymentRepository.findAllByKeyword(pageable, keyword, paymentStatus);
+    }
+
+    public Payment getById(int id){
+        return paymentRepository.findById(id).get();
+    }
+
+    public void cancelledById(int id){
+        Payment payment = paymentRepository.findById(id).get();
+        payment.setPaymentStatus(PaymentStatus.CANCELLED.getValue());
+        paymentRepository.save(payment);
+    }
+
+    public void acceptedById(int id){
+        Payment payment = paymentRepository.findById(id).get();
+        payment.setPaymentStatus(PaymentStatus.IN_PROGRESS.getValue());
+        paymentRepository.save(payment);
+    }
 }
