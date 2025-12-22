@@ -1,5 +1,6 @@
 package com.sec.car_selling.repository;
 
+import com.sec.car_selling.dto.response.OrderResponse;
 import com.sec.car_selling.dto.response.PaymentResponse;
 import com.sec.car_selling.entity.Payment;
 import org.springframework.data.domain.Page;
@@ -7,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment,Integer> {
@@ -42,4 +45,28 @@ public interface PaymentRepository extends JpaRepository<Payment,Integer> {
         WHERE p.id = :id
     """)
     PaymentResponse findByIdForFull(int id);
+
+    @Query(value = """
+        SELECT new com.sec.car_selling.dto.response.OrderResponse(p.id, p.code, p.carName, p.carColor, p.carVersion, p.price, p.createdAt, p.type, p.paymentStatus,
+            CASE
+                WHEN p.type = 0 THEN i.downPayment
+                    ELSE NULL
+            END)
+        FROM Payment p
+        LEFT JOIN Installment i ON i.paymentId = p.id
+        WHERE p.customerId = :id
+    """)
+    List<OrderResponse> findAllOrders(int id);
+
+    @Query(value = """
+        SELECT new com.sec.car_selling.dto.response.OrderResponse(p.id, p.code, p.carName, p.carColor, p.carVersion, p.price, p.createdAt, p.type, p.paymentStatus,
+            i.downPayment, i.loanDuration, b.bank, b.interestRate, s.city, s.name)
+        FROM Payment p
+        JOIN Showroom s ON s.id = p.showRoomId
+        LEFT JOIN Installment i ON i.paymentId = p.id AND p.type = 0
+        LEFT JOIN BankInterest b ON i.bankId = b.id
+        WHERE p.id = :id
+    """)
+    OrderResponse findOrdersById(int id);
+
 }
