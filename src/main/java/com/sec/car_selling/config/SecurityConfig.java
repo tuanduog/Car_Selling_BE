@@ -46,6 +46,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/register/**").permitAll()
                         .requestMatchers("/api/login/**").permitAll()
                         .requestMatchers("/assets/**").permitAll()
+                        .requestMatchers("/api/payment/v1/payos_transfer_handler").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())

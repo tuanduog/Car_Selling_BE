@@ -119,4 +119,14 @@ public class PaymentService {
         payment.setPaymentStatus(PaymentStatus.IN_PROGRESS.getValue());
         paymentRepository.save(payment);
     }
+
+    public Payment getIdForPayOs(int id){
+        return paymentRepository.findById(id).orElseThrow(() -> new RuntimeException("Payment not found"));
+    }
+
+    public void updatePaymentStatus(int id, int paymentStatus){
+        Payment payment = getIdForPayOs(id);
+        payment.setPaymentStatus(paymentStatus);
+        paymentRepository.save(payment);
+    }
 }

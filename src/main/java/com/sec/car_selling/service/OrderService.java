@@ -15,7 +15,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -32,19 +31,21 @@ public class OrderService {
     public List<OrderResponse> getList() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
-
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Customer customer = customerRepository.findByUserId(user.getId());
-        if (customer == null) {
-            throw new RuntimeException("Customer not found");
-        }
+        List<Customer> customers = customerRepository.findAllByUserId(user.getId());
+        List<OrderResponse> orders = customers.stream()
+                .flatMap(c -> paymentRepository.findAllOrders(c.getId()).stream())
+                .toList();
 
-        return paymentRepository.findAllOrders(customer.getId());
+        return orders;
     }
 
     public OrderResponse getById(int id) {
-        return paymentRepository.findOrdersById(id);
+        List<OrderResponse> res = paymentRepository.findOrdersById(id);
+        return res.stream()
+                .findFirst()
+                .orElse(null);
     }
 }

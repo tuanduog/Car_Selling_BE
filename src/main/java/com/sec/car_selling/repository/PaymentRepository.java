@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment,Integer> {
@@ -53,7 +54,11 @@ public interface PaymentRepository extends JpaRepository<Payment,Integer> {
                     ELSE NULL
             END)
         FROM Payment p
-        LEFT JOIN Installment i ON i.paymentId = p.id
+        LEFT JOIN Installment i ON i.id = (
+            SELECT MIN(i2.id)
+            FROM Installment i2
+            WHERE i2.paymentId = p.id
+        )
         WHERE p.customerId = :id
     """)
     List<OrderResponse> findAllOrders(int id);
@@ -67,6 +72,5 @@ public interface PaymentRepository extends JpaRepository<Payment,Integer> {
         LEFT JOIN BankInterest b ON i.bankId = b.id
         WHERE p.id = :id
     """)
-    OrderResponse findOrdersById(int id);
-
+    List<OrderResponse> findOrdersById(int id);
 }

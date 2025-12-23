@@ -43,4 +43,5 @@ public class Payment extends BaseEntity {
 
     @Column(name = "payment_status")
     int paymentStatus;
+
 }
